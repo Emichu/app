@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 async function getList() {
   const listUrl = "https://jsonplaceholder.typicode.com/posts";
@@ -27,7 +28,7 @@ function HomePage() {
       <ul>
         {data
           .filter((data: any) => data.title.includes(searchTerm))
-          .map((item: any, index: number) => <li key={index} >{item.title}</li>)}
+          .map((item: any, index: number) => <li key={index} ><Link to={`view/${item.id}`}> {item.title}</Link></li>)}
       </ul>
     </div>
   );
