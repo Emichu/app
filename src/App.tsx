@@ -1,26 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+//api call
+async function getList() {
+  const listUrl = "https://jsonplaceholder.typicode.com/posts";
+  const queryOptions = {};
+
+  const response = await fetch(listUrl, queryOptions);
+
+  return response.json();
+}
 
 function App() {
+  const [data, setData] = React.useState([])
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  React.useEffect(() => {
+    getList().then((data) => {
+      setData(data)
+    })
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <input
+        onChange={event => setSearchTerm(event.target.value)}
+      />
+
+      <ul>
+        {data
+          .filter((data: any) => data.title.includes(searchTerm))
+          .map((item: any, index: number) => <li key={index} >{item.title}</li>)}
+      </ul>
     </div>
   );
+
 }
 
 export default App;
